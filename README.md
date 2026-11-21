@@ -1,16 +1,31 @@
-# Ecommerce_app
+## Everyday Shop
 
-A new Flutter project.
+Everyday Shop is a Flutter e-commerce application integrated with the DummyJSON API to provide a seamless shopping experience, including product browsing, search, filtering, product management, and cart functionality.
 
-## Getting Started
+## Architecture
 
-This project is a starting point for a Flutter application.
+The app follows Clean Architecture:
 
-A few resources to get you started if this is your first Flutter project:
+State Management: Cubit (flutter_bloc)
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Layer Separation:
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+data/: data sources, models, repositories
+domain/: base repositories, use cases
+presentation/: cubits, components, screens
+
+
+
+## Technologies Used
+
+Flutter & Dart – Cross-platform application development.
+
+Flutter Bloc (Cubit) – State management.
+
+REST API – Backend communication.
+
+DummyJSON – Mock e-commerce API.
+
+
+
+
