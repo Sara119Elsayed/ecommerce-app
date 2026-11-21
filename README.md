@@ -1,4 +1,4 @@
-## Everyday Shop
+## Everyday Shop – E-Commerce Flutter App
 
 Everyday Shop is a Flutter e-commerce application integrated with the DummyJSON API to provide a seamless shopping experience, including product browsing, search, filtering, product management, and cart functionality.
 
