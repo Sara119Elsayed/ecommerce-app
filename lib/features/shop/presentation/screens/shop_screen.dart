@@ -5,12 +5,16 @@ import '../../business/cubit/shop_cubit.dart';
 import '../../business/cubit/shop_state.dart';
 import '../../data/models/cart.dart';
 import '../../data/models/product.dart';
+import '../../../profile/business/cubit/profile_cubit.dart';
+import '../../../profile/presentation/screens/profile_screen.dart';
 import '../widgets/product_card.dart';
 import '../widgets/product_form_dialog.dart';
 import 'product_details_screen.dart';
 
 class ShopScreen extends StatefulWidget {
-  const ShopScreen({super.key});
+  const ShopScreen({super.key, this.userId = 5});
+
+  final int userId;
 
   @override
   State<ShopScreen> createState() => _ShopScreenState();
@@ -61,9 +65,16 @@ class _ShopScreenState extends State<ShopScreen> {
       },
       builder: (context, state) {
         final showingCart = _tabIndex == 1;
+        final showingProfile = _tabIndex == 2;
         return Scaffold(
           appBar: AppBar(
-            title: Text(showingCart ? 'Your cart' : 'Everyday Shop'),
+            title: Text(
+              showingCart
+                  ? 'Your cart'
+                  : showingProfile
+                  ? 'Your profile'
+                  : 'Everyday Shop',
+            ),
             actions: [
               if (showingCart)
                 PopupMenuButton<String>(
@@ -87,8 +98,16 @@ class _ShopScreenState extends State<ShopScreen> {
                 ),
               if (!showingCart)
                 IconButton(
-                  tooltip: 'Refresh products',
-                  onPressed: () => context.read<ShopCubit>().loadProducts(),
+                  tooltip: showingProfile
+                      ? 'Refresh profile'
+                      : 'Refresh products',
+                  onPressed: () {
+                    if (showingProfile) {
+                      context.read<ProfileCubit>().loadProfile(widget.userId);
+                    } else {
+                      context.read<ShopCubit>().loadProducts();
+                    }
+                  },
                   icon: const Icon(Icons.refresh),
                 ),
             ],
@@ -98,9 +117,10 @@ class _ShopScreenState extends State<ShopScreen> {
             children: [
               _buildProductsTab(context, state),
               _buildCartTab(context, state),
+              ProfileScreen(userId: widget.userId),
             ],
           ),
-          floatingActionButton: showingCart
+          floatingActionButton: showingCart || showingProfile
               ? null
               : FloatingActionButton.extended(
                   onPressed: _createProduct,
@@ -112,6 +132,9 @@ class _ShopScreenState extends State<ShopScreen> {
             onDestinationSelected: (index) {
               setState(() => _tabIndex = index);
               if (index == 1) context.read<ShopCubit>().loadCarts();
+              if (index == 2) {
+                context.read<ProfileCubit>().loadProfile(widget.userId);
+              }
             },
             destinations: const [
               NavigationDestination(
@@ -123,6 +146,11 @@ class _ShopScreenState extends State<ShopScreen> {
                 icon: Icon(Icons.shopping_bag_outlined),
                 selectedIcon: Icon(Icons.shopping_bag),
                 label: 'Cart',
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.person_outline),
+                selectedIcon: Icon(Icons.person),
+                label: 'Profile',
               ),
             ],
           ),
