@@ -64,7 +64,9 @@ class _LoginScreenState extends State<LoginScreen> {
             );
           } else if (state is AuthSuccess) {
             Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (_) => const ShopScreen()),
+              MaterialPageRoute(
+                builder: (_) => ShopScreen(userId: state.auth.id ?? 5),
+              ),
             );
           }
         },
@@ -91,9 +93,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             child: wideLayout
                                 ? Row(
                                     children: [
-                                      const Expanded(
-                                        child: AuthBrandPanel(),
-                                      ),
+                                      const Expanded(child: AuthBrandPanel()),
                                       const SizedBox(width: 56),
                                       SizedBox(
                                         width: 420,
@@ -199,9 +199,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 tooltip: _obscurePassword ? 'Show password' : 'Hide password',
                 onPressed: loading
                     ? null
-                    : () => setState(
-                        () => _obscurePassword = !_obscurePassword,
-                      ),
+                    : () =>
+                          setState(() => _obscurePassword = !_obscurePassword),
                 icon: Icon(
                   _obscurePassword
                       ? Icons.visibility_outlined
